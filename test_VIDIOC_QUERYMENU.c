@@ -261,7 +261,7 @@ void test_VIDIOC_QUERYMENU_private() {
 			do_query_menu_invalid(i);
 
 		}
-	} while (ret_query == 0);
+	} while (ret_query == 0 && errno_query == 0);
 
 }
 

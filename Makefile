@@ -37,6 +37,7 @@
 CFLAGS = -O2 -Wall -Wextra --static
 #CFLAGS += -g
 LDFLAGS = -lcunit
+ADB?=/usr/bin/adb
 
 # TODO: handle dependencies
 
@@ -79,9 +80,18 @@ OBJS = dev_video.o \
        v4l2_show.o \
        v4l2_test.o
 
-all: $(OBJS)
+v4l-test: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o v4l-test
 
 clean:
 	rm -f $(OBJS)
 	rm -f v4l-test
+
+devicepush: v4l-test
+	$(ADB) push v4l-test /sdcard/
+
+remotetest: devicepush
+	$(ADB) shell sdcard/v4l-test|tee test_out.log
+
+localtest: v4l-test
+	./v4l-test|tee test_out.log

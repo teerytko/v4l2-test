@@ -199,6 +199,7 @@ int do_set_control(__u32 id) {
 
 	dprintf("\t%s:%u: VIDIOC_QUERYCTRL, id=%u (V4L2_CID_BASE+%i), ret_query=%i, errno_query=%i\n",
 		__FILE__, __LINE__, id, id-V4L2_CID_BASE, ret_query, errno_query);
+	CU_ASSERT_EQUAL(ret_query, 0);
 	if (ret_query == 0) {
 		dprintf("\t%s:%u: queryctrl = {.id=%u, .type=%i, .name=\"%s\", "
 		".minimum=%i, .maximum=%i, .step=%i, "
@@ -218,6 +219,12 @@ int do_set_control(__u32 id) {
 		queryctrl.reserved[1]
 		);
 	}
+	else {
+		dprintf("TEEMUR exit!!!!\t%s:%d\n",
+			__FILE__, __LINE__);
+		CU_FAIL("VIDIOC_QUERYCTRL Failed");
+	}
+
 
 	memset(&control_orig, 0, sizeof(control_orig));
 	control_orig.id = id;
@@ -243,8 +250,8 @@ int do_set_control(__u32 id) {
 				ret_set = ioctl(get_video_fd(), VIDIOC_S_CTRL, &control);
 				errno_set = errno;
 
-				dprintf("\t%s:%u: VIDIOC_S_CTRL, id=%u (V4L2_CID_BASE+%i), value=%i, ret_set=%i, errno_set=%i\n",
-					__FILE__, __LINE__, id, id-V4L2_CID_BASE, value, ret_set, errno_set);
+				dprintf("\t%s:%u: VIDIOC_S_CTRL, id=%u (V4L2_CID_BASE+%i), value=%i, ret_set=%i, errno_set=%i queryctrl.maximum=%i\n",
+					__FILE__, __LINE__, id, id-V4L2_CID_BASE, value, ret_set, errno_set, queryctrl.maximum);
 
 				if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED ||
 				    queryctrl.flags & V4L2_CTRL_FLAG_READ_ONLY) {

@@ -39,6 +39,7 @@
  * Released under GPL
  */
 
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -110,15 +111,15 @@ static CU_TestInfo suite_querycap[] = {
 };
 
 static CU_TestInfo suite_enums[] = {
-  { "VIDIOC_ENUMAUDIO", test_VIDIOC_ENUMAUDIO },
-  { "VIDIOC_ENUMAUDIO, index=S32_MAX", test_VIDIOC_ENUMAUDIO_S32_MAX },
-  { "VIDIOC_ENUMAUDIO, index=S32_MAX+1", test_VIDIOC_ENUMAUDIO_S32_MAX_1 },
-  { "VIDIOC_ENUMAUDIO, index=U32_MAX", test_VIDIOC_ENUMAUDIO_U32_MAX },
+  // { "VIDIOC_ENUMAUDIO", test_VIDIOC_ENUMAUDIO },
+  // { "VIDIOC_ENUMAUDIO, index=S32_MAX", test_VIDIOC_ENUMAUDIO_S32_MAX },
+  // { "VIDIOC_ENUMAUDIO, index=S32_MAX+1", test_VIDIOC_ENUMAUDIO_S32_MAX_1 },
+  // { "VIDIOC_ENUMAUDIO, index=U32_MAX", test_VIDIOC_ENUMAUDIO_U32_MAX },
 
-  { "VIDIOC_ENUMAUDOUT", test_VIDIOC_ENUMAUDOUT },
-  { "VIDIOC_ENUMAUDOUT, index=S32_MAX", test_VIDIOC_ENUMAUDOUT_S32_MAX },
-  { "VIDIOC_ENUMAUDOUT, index=S32_MAX+1", test_VIDIOC_ENUMAUDOUT_S32_MAX_1 },
-  { "VIDIOC_ENUMAUDOUT, index=U32_MAX", test_VIDIOC_ENUMAUDOUT_U32_MAX },
+  // { "VIDIOC_ENUMAUDOUT", test_VIDIOC_ENUMAUDOUT },
+  // { "VIDIOC_ENUMAUDOUT, index=S32_MAX", test_VIDIOC_ENUMAUDOUT_S32_MAX },
+  // { "VIDIOC_ENUMAUDOUT, index=S32_MAX+1", test_VIDIOC_ENUMAUDOUT_S32_MAX_1 },
+  // { "VIDIOC_ENUMAUDOUT, index=U32_MAX", test_VIDIOC_ENUMAUDOUT_U32_MAX },
 
   { "VIDIOC_ENUM_FMT", test_VIDIOC_ENUM_FMT },
   { "VIDIOC_ENUM_FMT, index=S32_MAX", test_VIDIOC_ENUM_FMT_S32_MAX },
@@ -351,8 +352,10 @@ static CU_TestInfo suite_null_writeread[] = {
   { "VIDIOC_CROPCAP with NULL parameter", test_VIDIOC_CROPCAP_NULL },
   { "VIDIOC_G_CROP with NULL parameter", test_VIDIOC_G_CROP_NULL },
   /* { "VIDIOC_TRY_FMT with NULL parameter", }, */
+  /* 
   { "VIDIOC_ENUMAUDIO with NULL parameter", test_VIDIOC_ENUMAUDIO_NULL },
   { "VIDIOC_ENUMAUDOUT with NULL parameter", test_VIDIOC_ENUMAUDOUT_NULL },
+  */
   { "VIDIOC_G_SLICED_VBI_CAP with NULL parameter", test_VIDIOC_G_SLICED_VBI_CAP_NULL },
   { "VIDIOC_G_EXT_CTRLS with NULL parameter", test_VIDIOC_G_EXT_CTRLS_NULL },
   { "VIDIOC_S_EXT_CTRLS with NULL parameter", test_VIDIOC_S_EXT_CTRLS_NULL },
@@ -400,6 +403,7 @@ static CU_SuiteInfo suites[] = {
 
 int main() {
 	CU_ErrorCode err;
+  // ret = video_open(&dev, argv[optind]);
 
 	err = CU_initialize_registry();
 	if (err != CUE_SUCCESS) {

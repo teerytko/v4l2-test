@@ -60,14 +60,23 @@ static int try_ASUS_camera(char *path, char* value) {
 	return f;
 }
 
+static int try_camera(char *path) {
+	f = open(path, O_RDWR);
+	if (f < 0) {
+		printf("Cannot open %s", path);
+		return f;
+	}
+
+	return f;
+}
+
 int open_video() {
 	int error = 0;
 
 	fflush(stdout);
 
-	f = open("/dev/video0", O_RDWR);
+	f = try_camera("/dev/video1");
 	if (f < 0) {
-		perror("Cannot open /dev/video0");
 		fprintf(stderr, "Retrying with ASUS camera...\n");
 		f = try_ASUS_camera("/proc/acpi/asus/camera", "1");
 		if (f < 0) {

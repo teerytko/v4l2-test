@@ -435,7 +435,7 @@ void test_VIDIOC_QUERYCTRL_private() {
 		dprintf("\t%s:%u: VIDIOC_QUERYCTRL, id=%u (V4L2_CID_BASE+%i), ret_query=%i, errno_query=%i\n",
 			__FILE__, __LINE__, i, i-V4L2_CID_BASE, ret_query, errno_query);
 
-		if (ret_query == 0) {
+		if (ret_query == 0 && errno_query == 0) {
 			CU_ASSERT_EQUAL(ret_query, 0);
 			CU_ASSERT_EQUAL(queryctrl.id, i);
 
@@ -543,7 +543,7 @@ void test_VIDIOC_QUERYCTRL_private() {
 			CU_ASSERT_EQUAL(memcmp(&queryctrl, &queryctrl2, sizeof(queryctrl)), 0);
 
 		}
-	} while (ret_query == 0);
+	} while (ret_query == 0 && errno_query == 0);
 
 }
 
