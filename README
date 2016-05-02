@@ -1,3 +1,5 @@
+This is a copy of v4l-test (http://v4l-test.sourceforge.net/). Target is to update
+and enable testing of camera input devices.
 
            v4l-test: Test environment for Video For Linux Two API
 
