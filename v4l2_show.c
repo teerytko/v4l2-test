@@ -107,11 +107,9 @@ void show_v4l2_buffer(struct v4l2_buffer *buf) {
 	}
 
 	dprintf(".length=%u, "
-		".input=%u, "
 		".reserved=0x%x "
 		"}\n",
 		buf->length,
-		buf->input,
 		buf->reserved
 	);
 
