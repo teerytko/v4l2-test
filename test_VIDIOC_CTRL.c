@@ -181,6 +181,8 @@ int do_set_control(__u32 id) {
 	int ret_set, errno_set;
 	int ret_get, errno_get;
 	int ret_orig, errno_orig;
+	unsigned int step, range, i;
+	const unsigned int MAX_STEPS = 255;
 	struct v4l2_queryctrl queryctrl;
 	struct v4l2_control control_orig;
 	struct v4l2_control control;
@@ -219,11 +221,6 @@ int do_set_control(__u32 id) {
 		queryctrl.reserved[1]
 		);
 	}
-	else {
-		dprintf("TEEMUR exit!!!!\t%s:%d\n",
-			__FILE__, __LINE__);
-		CU_FAIL("VIDIOC_QUERYCTRL Failed");
-	}
 
 
 	memset(&control_orig, 0, sizeof(control_orig));
@@ -241,9 +238,17 @@ int do_set_control(__u32 id) {
 		case V4L2_CTRL_TYPE_INTEGER:
 		case V4L2_CTRL_TYPE_BOOLEAN:
 		case V4L2_CTRL_TYPE_MENU:
+			// Limit the number of steps to MAX_STEPS
+			step = 1;
+			range = queryctrl.maximum - queryctrl.minimum;
+			dprintf("TEEMUR queryctrl range=%u\n", range);
+			if ( range > MAX_STEPS )
+				step = range / MAX_STEPS;
+			dprintf("TEEMUR queryctrl step=%d\n", step);
+			value = queryctrl.minimum;
 
-			/* TODO: this is an infinite loop if queryctrl.maximum == S32_MAX */
-			for (value = queryctrl.minimum; value <= queryctrl.maximum; value++) {
+			for (i = 0; i<MAX_STEPS; i++) {
+				value = value + step;
 				memset(&control, 0xff, sizeof(control));
 				control.id = id;
 				control.value = value;

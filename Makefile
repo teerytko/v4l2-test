@@ -95,4 +95,4 @@ remotetest: devicepush
 
 # needs sudo modprobe vivi
 localtest: v4l-test
-	./v4l-test|tee test_out.log
+	./v4l-test
