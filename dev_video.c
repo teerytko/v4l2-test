@@ -28,38 +28,6 @@
 static int f;
 static int dev_video_state;
 
-static int try_ASUS_camera(char *path, char* value) {
-	int ASUS_camera;
-	size_t s;
-	int ret;
-
-	ASUS_camera = open(path, O_WRONLY);
-	if (ASUS_camera < 0) {
-		fprintf(stderr, "Cannot open %s: %s\n", path, strerror(errno));
-		return ASUS_camera;
-	}
-	s = write(ASUS_camera, value, 1);
-	ret = close(ASUS_camera);
-	if (s != 1) {
-		return -1;
-	}
-	if (ret < 0) {
-		perror("Cannot close ASUS camera");
-		return ret;
-	}
-
-	sleep(1);
-
-	f = open("/dev/video0", O_RDWR);
-	if (f < 0) {
-		perror("Cannot open /dev/video0");
-		return f;
-	}
-	dev_video_state = DEV_VIDEO_STATE_ASUS;
-
-	return f;
-}
-
 static int try_camera(char *path) {
 	f = open(path, O_RDWR);
 	if (f < 0) {
@@ -75,20 +43,9 @@ int open_video() {
 
 	fflush(stdout);
 
-	f = try_camera("/dev/video1");
+	f = try_camera("/dev/video0");
 	if (f < 0) {
-		fprintf(stderr, "Retrying with ASUS camera...\n");
-		f = try_ASUS_camera("/proc/acpi/asus/camera", "1");
-		if (f < 0) {
-			f = try_ASUS_camera("/sys/devices/platform/eeepc/camera", "1");
-			if (f < 0) {
-				error = 1;
-			} else {
-				dev_video_state = DEV_VIDEO_STATE_EEEPC;
-			}
-		} else {
-			dev_video_state = DEV_VIDEO_STATE_ASUS;
-		}
+		error = 1;
 	} else {
 		dev_video_state = DEV_VIDEO_STATE_NORMAL;
 	}
@@ -108,12 +65,6 @@ int close_video() {
 	}
 	switch (dev_video_state) {
 		case DEV_VIDEO_STATE_NORMAL:
-			break;
-		case DEV_VIDEO_STATE_ASUS:
-			try_ASUS_camera("/proc/acpi/asus/camera", "0");
-			break;
-		case DEV_VIDEO_STATE_EEEPC:
-			try_ASUS_camera("/sys/devices/platform/eeepc/camera", "0");
 			break;
 	}
 

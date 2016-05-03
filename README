@@ -137,3 +137,11 @@ Feedbacks
 ---------
 Any feedbacks, comments, ideas, etc. are welcome at the author's
 email address: Márton Németh <nm127@freemail.hu>.
+
+Test setup
+----------
+local testing can be done against vivi.
+
+Recipe: # Expects to find /dev/video0 after vivi module probe
+$ sudo modprobe vivi
+$ make localtest

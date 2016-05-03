@@ -93,5 +93,6 @@ devicepush: v4l-test
 remotetest: devicepush
 	$(ADB) shell sdcard/v4l-test|tee test_out.log
 
+# needs sudo modprobe vivi
 localtest: v4l-test
 	./v4l-test|tee test_out.log
